@@ -2,9 +2,6 @@
 
 An Online Booking/Reservation System for exquisite travellers.
 
-## Categories
+## Overview
 
-This project contains two main categories.
-
-1. Mobile App - Xamarin
-2. Backend - Nodejs Server
+This repo contains the api of Byte App
