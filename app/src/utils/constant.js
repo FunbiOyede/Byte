@@ -9,7 +9,6 @@ module.exports = {
   EVENT_DISPATCHER: "event.dispatcher",
   USER_MODEL: "user.model",
   REGISTRATION_VALIDATION_SCHEMA: {
-    name: Joi.string().required(),
     username: Joi.string().alphanum().min(3).max(30).required(),
     email: Joi.string().email().required(),
     password: Joi.string().required(),

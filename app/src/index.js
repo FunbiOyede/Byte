@@ -5,11 +5,12 @@ const { EventEmitter2 } = require("eventemitter2");
 const jwtAuthMiddleware = require("./middleware/auth");
 const { Container } = require("typedi");
 const BodyParser = require("body-parser");
+const UserSchema = require("../src/data/models/users.model")
 const { logger } = require("./utils/logger");
 const { NotFoundError, handleError } = require("./utils/error");
 const StatusCodes = require("./utils/status-code");
 const { httpLogger } = require("./utils/logger");
-const {  EVENT_DISPATCHER,USER_LOGGED_IN,USER_REGISTERED,USER_SERVICE,REGISTER_CONTROLLER,LOGIN_CONTROLLER} = require("./utils/constant")
+const { USER_MODEL, EVENT_DISPATCHER,USER_LOGGED_IN,USER_REGISTERED,USER_SERVICE,REGISTER_CONTROLLER,LOGIN_CONTROLLER} = require("./utils/constant")
 const asyncRequest = require("./utils/async-request");
 const UserService = require("./services/user.service");
 const RegisterController = require("./controllers/register.controller")
@@ -111,13 +112,13 @@ class Byte {
     router.get(
       "/user",
       jwtAuthMiddleware,
-      asyncRequest(Container.get(REGISTER_CONTROLLER).fetchUser)
+      asyncRequest(Container.get(LOGIN_CONTROLLER).userInfo)
     );
   }
-
+  
 
   init() {
-   
+    this.registerModels()
     this.registerEvents();
     this.registerRegistrationEventListeners();
     this.registerLoginEventListeners();
