@@ -9,6 +9,7 @@ module.exports = {
       user:     'funbi',
       password: 'funbioyede',
       host: 'localhost'
+
   
     },
     pool: {

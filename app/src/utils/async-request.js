@@ -4,6 +4,7 @@ module.exports = (handler) => (request, response) =>
   handler(request, response).catch((error) => {
     logger.error(error.message, error.status, error);
     if (error instanceof Error) {
+    
       return response.status(error.statusCode).json({
         status: "error",
         code: error.statusCode,
