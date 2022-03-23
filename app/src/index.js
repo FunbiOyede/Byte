@@ -6,15 +6,22 @@ const jwtAuthMiddleware = require("./middleware/auth");
 const { Container } = require("typedi");
 const BodyParser = require("body-parser");
 const UserSchema = require("../src/data/models/users.model")
+const HotelSchema = require("../src/data/models/hotels.model");
+const BookingSchema = require("../src/data/models/booking.model");
+const RoomTypesModel = require("../src/data/models/room_types.models")
 const { logger } = require("./utils/logger");
 const { NotFoundError, handleError } = require("./utils/error");
 const StatusCodes = require("./utils/status-code");
 const { httpLogger } = require("./utils/logger");
-const { USER_MODEL, EVENT_DISPATCHER,USER_LOGGED_IN,USER_REGISTERED,USER_SERVICE,REGISTER_CONTROLLER,LOGIN_CONTROLLER} = require("./utils/constant")
+const { USER_MODEL, BOOKING_MODEL,BOOKING_SERVICE, ROOM_TYPE_MODEL, HOTEL_SERVICE, HOTEL_CONTROLLER, HOTEL_MODEL, EVENT_DISPATCHER,USER_LOGGED_IN,USER_REGISTERED,USER_SERVICE,REGISTER_CONTROLLER,LOGIN_CONTROLLER,BOOKING_CONTROLLER} = require("./utils/constant")
 const asyncRequest = require("./utils/async-request");
 const UserService = require("./services/user.service");
+const HotelService = require("../src/services/hotel.service");
+const BookingService = require("./services/booking.service")
 const RegisterController = require("./controllers/register.controller")
 const LoginController = require("./controllers/login.controller")
+const HotelController = require("../src/controllers/hotel.contoller");
+const BookingController = require("../src/controllers/booking.controller");
 class Byte {
   constructor() {
     this.app = express();
@@ -37,6 +44,9 @@ class Byte {
    */
   registerModels() {
     Container.set(USER_MODEL, UserSchema);
+    Container.set(HOTEL_MODEL,HotelSchema)
+    Container.set(ROOM_TYPE_MODEL, RoomTypesModel)
+    Container.set(BOOKING_MODEL,BookingSchema)
   
   }
 
@@ -81,6 +91,8 @@ class Byte {
   }
   registerServices() {
     Container.set(USER_SERVICE, new UserService());
+    Container.set(HOTEL_SERVICE, new HotelService());
+    Container.set(BOOKING_SERVICE, new BookingService());
    
   }
   registerResponseHelpers() {
@@ -101,6 +113,10 @@ class Byte {
   registerControllers() {
     Container.set(REGISTER_CONTROLLER, new RegisterController());
     Container.set(LOGIN_CONTROLLER, new LoginController());
+    Container.set(HOTEL_CONTROLLER, new HotelController());
+    Container.set(BOOKING_CONTROLLER, new BookingController());
+
+
   }
   registerAuthRoutes() {
     const router = this.getAuthRouter();
@@ -115,6 +131,51 @@ class Byte {
       asyncRequest(Container.get(LOGIN_CONTROLLER).userInfo)
     );
   }
+
+  registerGenericRoutes() {
+    const router = this.getGenericRouter();
+  //might need an auth for managers
+  //using auth for users for now
+    router.post(
+      "/hotel/register",
+      jwtAuthMiddleware,
+      asyncRequest(Container.get(HOTEL_CONTROLLER).addHotel)
+    );
+
+    router.get(
+      "/hotels",
+      jwtAuthMiddleware,
+      asyncRequest(Container.get(HOTEL_CONTROLLER).allHotels)
+    );
+
+    
+    router.get(
+      "/hotel/:id",
+      jwtAuthMiddleware,
+      asyncRequest(Container.get(HOTEL_CONTROLLER).fetchHotel)
+    );
+
+    router.post(
+      "/hotel/room-type",
+      jwtAuthMiddleware,
+      asyncRequest(Container.get(HOTEL_CONTROLLER).addRoomType)
+    );
+
+    
+    router.post(
+      "/booking",
+      jwtAuthMiddleware,
+      asyncRequest(Container.get(BOOKING_CONTROLLER).Booking)
+    );
+
+     
+    router.get(
+      "/user/booking",
+      jwtAuthMiddleware,
+      asyncRequest(Container.get(BOOKING_CONTROLLER).GetUserBooking)
+    );
+
+  }
   
 
   init() {
@@ -126,6 +187,7 @@ class Byte {
     this.registerControllers();
     this.registerResponseHelpers();
     this.registerAuthRoutes();
+    this.registerGenericRoutes();
 
 
     this.app.use((req, res, next) => {
@@ -133,6 +195,7 @@ class Byte {
     });
 
     this.app.use((error, req, res, next) => {
+    
       handleError(error, res);
     });
     return this;

@@ -28,9 +28,10 @@ const {
     }
 
   async userInfo(request, response){
+    
     const { id } = request.user;
     const user = await this.UserService.fetchUser(id);
-     response.ok({ user });
+    response.ok({ user });
   }
 
   }

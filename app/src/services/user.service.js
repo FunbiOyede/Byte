@@ -46,6 +46,8 @@ class UserService{
         return { user };
       }
     
+
+
       async fetchUser(id) {
         const user = await this.UserModel.forge({
           id: id,
