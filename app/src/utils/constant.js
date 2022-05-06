@@ -20,8 +20,8 @@ module.exports = {
     username: Joi.string().required(),
     email: Joi.string().email().required(),
     password: Joi.string().required(),
-    FirstName: Joi.string().required(),
-    LastName: Joi.string().required()
+    FirstName: Joi.string(),
+    LastName: Joi.string()
   },
   LOGIN_VALIDATION_SCHEMA: {
     email: Joi.string().email().required(),
