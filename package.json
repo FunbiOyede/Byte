@@ -22,6 +22,11 @@
   },
   "scripts": {
     "dev": "cd app && nodemon app.js",
-    "bootstrap": "knex migrate:latest"
+    "start": "cd app && node app.js",
+    "bootstrap": "knex migrate:latest",
+    
+  },
+  "engines": {
+    "node": "16.13.0"
   }
 }
