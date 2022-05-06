@@ -25,7 +25,7 @@ class RegisterController extends BaseController {
     
         const { body } = request;
      
-        validate(body, REGISTRATION_VALIDATION_SCHEMA);
+       // validate(body, REGISTRATION_VALIDATION_SCHEMA);
     
         const user = await this.UserService.createUser({
           ...body,
