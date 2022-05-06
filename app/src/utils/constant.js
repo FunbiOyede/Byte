@@ -17,7 +17,7 @@ module.exports = {
   ROOM_TYPE_MODEL:"room.type.model",
   ROOM_INVENTORY_MODEL:"room.inventory.model",
   REGISTRATION_VALIDATION_SCHEMA: {
-    username: Joi.string().alphanum().min(3).max(30).required(),
+    username: Joi.string().required(),
     email: Joi.string().email().required(),
     password: Joi.string().required(),
     FirstName: Joi.string().required(),
