@@ -13,6 +13,7 @@ const {
       this.allHotels = this.allHotels.bind(this);
       this.fetchHotel = this.fetchHotel.bind(this);
       this.addRoomType = this.addRoomType.bind(this);
+      this.RoomInfo = this.RoomInfo.bind(this);
     }
   
     async addHotel(request, response) {
@@ -49,6 +50,13 @@ const {
       const { body } = request;
       const roomType = await this.HotelService.addRoomType(body);
       response.ok({ roomType });
+    }
+
+
+    async RoomInfo(request,response){
+      const { body } = request;
+      const roomInfo = await this.HotelService.roomInventory(body);
+      response.ok({ roomInfo });
     }
   }
   

@@ -32,6 +32,13 @@ class ValidationError extends Error {
   }
 }
 
+
+class RoomNotAvailable extends Error{
+  constructor(message) {
+    super(message);
+    (this.statusCode = httpStatus.BAD_REQUEST), (this.message = message);
+  }
+}
 const handleError = (error, res) => {
   error.statusCode = error.statusCode || httpStatus.INTERNAL_SERVER_ERROR;
   error.status = error.status || "error";
@@ -50,4 +57,5 @@ module.exports = {
   handleError,
   NotFoundError,
   BadRequest,
+  RoomNotAvailable
 };

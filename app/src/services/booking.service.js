@@ -1,7 +1,9 @@
 
-const {BOOKING_MODEL, HOTEL_MODEL} = require("../utils/constant")
+const {BOOKING_MODEL, HOTEL_MODEL, ROOM_INVENTORY_MODEL} = require("../utils/constant")
 const { Container } = require("typedi");
-const { BadRequest } = require("../utils/error");
+const { BadRequest,RoomNotAvailable } = require("../utils/error");
+const knex = require("../data/knex/knex");
+const bookshelf = require("bookshelf")(knex);
 
 
 class BookingService{
@@ -9,13 +11,37 @@ class BookingService{
     constructor(){
         this.BookingModel = Container.get(BOOKING_MODEL);
         this.HotelModel = Container.get(HOTEL_MODEL);
+        this.RoomInventory = Container.get(ROOM_INVENTORY_MODEL)
     }
 
 
    async  createBooking(data){
-        let booking = await this.BookingModel.forge(data).save();
-        return booking;
-    }
+     //
+
+     return new Promise(async (resolve, reject) => {
+
+      bookshelf.transaction(async(t) =>{
+        //check booking 
+        const existingBooking = await this.BookingModel.forge({
+          hotel_id: data.hotel_id,
+        }).fetch({
+          require: false,
+        });
+    
+        if (existingBooking) {
+          //throw new BadRequest("booking Already Exits");
+          reject("booking Already Exits");
+        }
+       
+          let booking = await this.BookingModel.forge(data).save(null, { transacting: t });
+         
+          resolve({booking})
+       })
+       
+
+     })
+    
+  }
 
     async getUserBooking(id){
         let booking = await this.BookingModel.forge({
@@ -42,14 +68,9 @@ class BookingService{
           return data
     }
 
-  async checkin(checkinDate){
 
-  }
 
-  async checkout(checkoutDate){
-      
-  }
-
+  ///check forr rroom availability
 }
 
 

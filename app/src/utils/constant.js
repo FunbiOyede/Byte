@@ -15,6 +15,7 @@ module.exports = {
   HOTEL_MODEL:"hotel.model",
   BOOKING_MODEL:"booking.model",
   ROOM_TYPE_MODEL:"room.type.model",
+  ROOM_INVENTORY_MODEL:"room.inventory.model",
   REGISTRATION_VALIDATION_SCHEMA: {
     username: Joi.string().alphanum().min(3).max(30).required(),
     email: Joi.string().email().required(),

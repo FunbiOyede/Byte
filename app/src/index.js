@@ -9,11 +9,12 @@ const UserSchema = require("../src/data/models/users.model")
 const HotelSchema = require("../src/data/models/hotels.model");
 const BookingSchema = require("../src/data/models/booking.model");
 const RoomTypesModel = require("../src/data/models/room_types.models")
+const RoomInventoryModel = require("../src/data/models/room_inventory_models")
 const { logger } = require("./utils/logger");
 const { NotFoundError, handleError } = require("./utils/error");
 const StatusCodes = require("./utils/status-code");
 const { httpLogger } = require("./utils/logger");
-const { USER_MODEL, BOOKING_MODEL,BOOKING_SERVICE, ROOM_TYPE_MODEL, HOTEL_SERVICE, HOTEL_CONTROLLER, HOTEL_MODEL, EVENT_DISPATCHER,USER_LOGGED_IN,USER_REGISTERED,USER_SERVICE,REGISTER_CONTROLLER,LOGIN_CONTROLLER,BOOKING_CONTROLLER} = require("./utils/constant")
+const { USER_MODEL, BOOKING_MODEL,ROOM_INVENTORY_MODEL,BOOKING_SERVICE, ROOM_TYPE_MODEL, HOTEL_SERVICE, HOTEL_CONTROLLER, HOTEL_MODEL, EVENT_DISPATCHER,USER_LOGGED_IN,USER_REGISTERED,USER_SERVICE,REGISTER_CONTROLLER,LOGIN_CONTROLLER,BOOKING_CONTROLLER} = require("./utils/constant")
 const asyncRequest = require("./utils/async-request");
 const UserService = require("./services/user.service");
 const HotelService = require("../src/services/hotel.service");
@@ -47,6 +48,7 @@ class Byte {
     Container.set(HOTEL_MODEL,HotelSchema)
     Container.set(ROOM_TYPE_MODEL, RoomTypesModel)
     Container.set(BOOKING_MODEL,BookingSchema)
+    Container.set(ROOM_INVENTORY_MODEL,RoomInventoryModel)
   
   }
 
@@ -161,7 +163,12 @@ class Byte {
       asyncRequest(Container.get(HOTEL_CONTROLLER).addRoomType)
     );
 
-    
+    router.post(
+      "/hotel/info",
+      jwtAuthMiddleware,
+      asyncRequest(Container.get(HOTEL_CONTROLLER).RoomInfo)
+    );
+
     router.post(
       "/booking",
       jwtAuthMiddleware,
