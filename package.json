@@ -23,7 +23,7 @@
   "scripts": {
     "dev": "cd app && nodemon app.js",
     "start": "cd app && node app.js",
-    "bootstrap": "knex migrate:latest",
+    "bootstrap": "knex migrate:latest"
     
   },
   "engines": {
