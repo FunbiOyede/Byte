@@ -21,6 +21,7 @@
     "winston": "^3.3.3"
   },
   "scripts": {
-    "dev": "cd app && nodemon app.js"
+    "dev": "cd app && nodemon app.js",
+    "bootstrap": "knex migrate:latest"
   }
 }
