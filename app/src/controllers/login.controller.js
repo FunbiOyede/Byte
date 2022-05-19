@@ -28,7 +28,7 @@ const {
       
       const token = generateAccessToken(user, true);
       
-      this.EventEmitter.emit(USER_LOGGED_IN, user);
+      //this.EventEmitter.emit(USER_LOGGED_IN, user);
       response.ok({ user, token });
     }
 
