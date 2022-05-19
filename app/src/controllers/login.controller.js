@@ -25,10 +25,11 @@ const {
      const validatedData =  validate(body,LOGIN_VALIDATION_SCHEMA );
      
       const { user } = await this.UserService.login(validatedData);
-      
+      console.log("generating token")
       const token = generateAccessToken(user, true);
-      
-      //this.EventEmitter.emit(USER_LOGGED_IN, user);
+      console.log("sending event")
+      this.EventEmitter.emit(USER_LOGGED_IN, user);
+      console.log("sending user data and token!")
       response.ok({ user, token });
     }
 
