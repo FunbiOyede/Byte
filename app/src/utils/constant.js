@@ -19,7 +19,9 @@ module.exports = {
   REGISTRATION_VALIDATION_SCHEMA: {
     username: Joi.string().required(),
     email: Joi.string().email().required(),
-    password: Joi.string().required()
+    password: Joi.string().required().max(8),
+    FirstName:Joi.string().required(),
+    LastName:Joi.string().required(),                                    
   },
   LOGIN_VALIDATION_SCHEMA: {
     email: Joi.string().email().required(),

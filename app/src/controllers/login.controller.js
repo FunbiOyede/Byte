@@ -20,9 +20,14 @@ const {
   
     async signIn(request, response) {
       const { body } = request;
-     // validate(body, LOGIN_VALIDATION_SCHEMA);
-      const { user } = await this.UserService.login(body);
+
+
+     const validatedData =  validate(body,LOGIN_VALIDATION_SCHEMA );
+     
+      const { user } = await this.UserService.login(validatedData);
+      
       const token = generateAccessToken(user, true);
+      
       this.EventEmitter.emit(USER_LOGGED_IN, user);
       response.ok({ user, token });
     }

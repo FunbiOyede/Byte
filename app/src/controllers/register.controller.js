@@ -25,10 +25,11 @@ class RegisterController extends BaseController {
     
         const { body } = request;
      
-        validate(body, REGISTRATION_VALIDATION_SCHEMA);
-    
+       
+      const validatedData =  validate(body, REGISTRATION_VALIDATION_SCHEMA);
+     
         const user = await this.UserService.createUser({
-          ...body,
+          ...validatedData,
           password: Bcrypt.hashSync(body.password, Bcrypt.genSaltSync(10)),
         });
 
