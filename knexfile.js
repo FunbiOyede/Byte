@@ -41,10 +41,7 @@ module.exports = {
   production: {
     client: "mysql",
     connection: process.env.CLEARDB_DATABASE_URL,
-    pool: {
-      min: 2,
-      max: 10,
-    },
+    
     migrations: {
       tableName: 'knex_migrations',
       directory: __dirname + '/app/src/data/knex/migrations',
