@@ -10,6 +10,7 @@ module.exports = (handler) => (request, response) =>
         code: error.statusCode,
         success: false,
         message: error.message,
+        error
       });
     } else if (error instanceof BadRequest) {
       return response.status(error.statusCode).json({
