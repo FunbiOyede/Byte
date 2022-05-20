@@ -26,13 +26,13 @@ const {
      response.ok({ validatedData});
      
       const { user } = await this.UserService.login(validatedData);
-      // console.log("generating token")
-      response.ok({ user});
-      // const token = generateAccessToken(user, true);
-      // console.log("sending event")
-      // this.EventEmitter.emit(USER_LOGGED_IN, user);
-      // console.log("sending user data and token!")
-      // response.ok({ user, token });
+      console.log("generating token")
+
+      const token = generateAccessToken(user, true);
+      console.log("sending event")
+      this.EventEmitter.emit(USER_LOGGED_IN, user);
+      console.log("sending user data and token!")
+      response.ok({ user, token });
     }
 
   async userInfo(request, response){
