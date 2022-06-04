@@ -1,4 +1,6 @@
 const environment = process.env.ENVIRONMENT || 'development'
 const config = require('../../../../knexfile')[environment];
-console.log( environment,"checking environment")
+const { logger } = require("../utils/logger")
+logger.info( environment,"environment")
+
 module.exports = require('knex')(config);
